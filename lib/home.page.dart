@@ -37,10 +37,7 @@ class HomePage extends StatelessWidget {
 
                 ],
               ),),
-            TextButton(onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/authentification');
-            }, child: Text("J'ai deja un compte"))
+
           ],
         )
     );
@@ -58,11 +55,6 @@ class HomePage extends StatelessWidget {
       prefs.setString("user","Taieb");
       Navigator.pop(context);
       Navigator.pushNamed(context, '/cvPage');
-    } else {
-      const snackBar = SnackBar(
-        content: Text('Id or Password is invalid'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
