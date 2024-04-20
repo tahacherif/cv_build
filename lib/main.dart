@@ -1,8 +1,14 @@
+import 'package:cv_build/formation.page.dart';
+import 'package:cv_build/langue.page.dart';
+import 'package:cv_build/projet.page.dart';
+import 'package:cv_build/skills.page.dart';
 import 'package:flutter/material.dart';
 import 'package:cv_build/cv.page.dart';
 import 'package:cv_build/home.page.dart';
 import 'package:cv_build/data/user_data_source.dart';
 import 'package:cv_build/model/user.dart';
+
+import 'exp.page.dart';
 
 
 void main() {
@@ -32,9 +38,18 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light(), // Default light mode theme
+      darkTheme: ThemeData.dark(), // Dark mode theme
+      themeMode: ThemeMode.system, // Set to system to follow system settings, you can change it to ThemeMode.light or ThemeMode.dark
       routes: {
         '/cvPage': (context) => CvPage(), // Pass the user to CvPage
         '/home': (context) => HomePage(),
+        '/formation': (context) => FormationPage(),
+        '/exp': (context) => ExpPage(),
+        '/langue': (context) => LanguePage(),
+        '/skills': (context) => SkillsPage(),
+        '/projet': (context) => ProjetPage(),
+
       },
       debugShowCheckedModeBanner: false,
       home: HomePage(),

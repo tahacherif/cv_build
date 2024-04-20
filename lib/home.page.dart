@@ -16,15 +16,9 @@ class HomePage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.purple[500],
+        backgroundColor: Color(0xFFD7ACAC),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/arriere_plan.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +37,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       'Mohamed Taha Cherif',
                       style: TextStyle(
-                        color: Colors.purple[500],
+                        color: Color(0xFFD7ACAC),
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -66,7 +60,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       'Taieb Daoud',
                       style: TextStyle(
-                        color: Colors.purple[500],
+                        color: Color(0xFFD7ACAC),
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -92,11 +86,6 @@ class HomePage extends StatelessWidget {
       prefs.setString("user", "Taieb Daoud");
       Navigator.pop(context);
       Navigator.pushNamed(context, '/cvPage');
-    } else {
-      const snackBar = SnackBar(
-        content: Text('Identifiant ou mot de passe invalide'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
