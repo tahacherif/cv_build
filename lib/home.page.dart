@@ -19,12 +19,6 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.purple[500],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/arriere_plan.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -92,11 +86,6 @@ class HomePage extends StatelessWidget {
       prefs.setString("user", "Taieb Daoud");
       Navigator.pop(context);
       Navigator.pushNamed(context, '/cvPage');
-    } else {
-      const snackBar = SnackBar(
-        content: Text('Identifiant ou mot de passe invalide'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }

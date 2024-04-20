@@ -32,6 +32,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light(), // Default light mode theme
+      darkTheme: ThemeData.dark(), // Dark mode theme
+      themeMode: ThemeMode.system, // Set to system to follow system settings, you can change it to ThemeMode.light or ThemeMode.dark
       routes: {
         '/cvPage': (context) => CvPage(), // Pass the user to CvPage
         '/home': (context) => HomePage(),

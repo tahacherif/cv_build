@@ -9,6 +9,7 @@ class UserDataSource {
       "john@example.com",
       "+1 555 123 4567",
       "123 Main St, City",
+      "taha.jpg",
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       ["Flutter", "Java", "Python"],
       [
@@ -27,6 +28,7 @@ class UserDataSource {
       "alice@example.com",
       "+1 555 987 6543",
       "456 Elm St, Town",
+      "taieb.jpg",
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       ["Marketing", "Social Media", "Analytics"],
       [

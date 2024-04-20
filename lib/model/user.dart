@@ -4,6 +4,7 @@ class User {
   final String email;
   final String phone;
   final String address;
+  final String image;
   final String summary;
   final List<String> skills;
   final List<Experience> experiences;
@@ -16,6 +17,7 @@ class User {
         email = '',
         phone = '',
         address = '',
+        image = '',
         summary = '',
         skills = [],
         experiences = [],
@@ -28,6 +30,7 @@ class User {
       this.email,
       this.phone,
       this.address,
+      this.image,
       this.summary,
       this.skills,
       this.experiences,

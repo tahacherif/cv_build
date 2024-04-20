@@ -44,7 +44,7 @@ class CvPage extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        backgroundImage: AssetImage('images/taha.jpg'), // Chemin de votre image
+                        backgroundImage: AssetImage('images/' + user.image), // Chemin de votre image
                       ),
                       SizedBox(width: 8),
                       Text(
