@@ -1,14 +1,8 @@
-
-
 import 'package:flutter/material.dart';
-
-
-import '../menu/drawer.widget.dart';
+import 'package:provider/provider.dart';
+import 'LanguageProvider.dart';
 
 class LanguePage extends StatelessWidget {
-  TextEditingController txt_ville =new TextEditingController();
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,38 +20,57 @@ class LanguePage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _buildEducationItems(),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildLanguageButton(context, 'English', Icons.language, Locale('en')),
+            SizedBox(height: 12.0),
+            _buildLanguageButton(context, 'Français', Icons.language, Locale('fr')),
+            SizedBox(height: 12.0),
+            _buildLanguageButton(context, 'العربية', Icons.language, Locale('ar')),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushNamed(context, '/skills');
+              },
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/home');
+              },
+              child: Icon(
+                Icons.home,
+                size: 30, // Taille du logo
+                color: Color(0xFFD7ACAC), // Couleur du logo
+              ),
+            ),
+
+          ],
         ),
       ),
     );
   }
 
-  List<Widget> _buildEducationItems() {
-    return [
-      _buildEducationItem('Education Item 1', 'Subtitle for Item 1'),
-
-      // Add more items as needed
-    ];
-  }
-
-  Widget _buildEducationItem(String title, String subtitle) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[200], // Couleur de fond du cadre
-        borderRadius: BorderRadius.circular(10.0), // Bord arrondi du cadre
-      ),
-      margin: EdgeInsets.only(bottom: 16.0), // Marge inférieure pour l'espacement entre les éléments
-      padding: EdgeInsets.all(16.0), // Espacement interne du cadre
-      child: ListTile(
-        title: Text(title),
-        subtitle: Text(subtitle),
-        leading: Icon(Icons.school),
-        onTap: () {
-          // Ajoutez ici la logique pour gérer le tap
-        },
+  Widget _buildLanguageButton(BuildContext context, String language, IconData icon, Locale locale) {
+    return ElevatedButton.icon(
+      onPressed: () {
+        Provider.of<LanguageProvider>(context, listen: false).changeLanguage(locale);
+      },
+      icon: Icon(icon),
+      label: Text(language),
+      style: ElevatedButton.styleFrom(
+        elevation: 3, // Elevation of the button
+        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0), // Button padding
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0), // Rounded corners
+        ),
       ),
     );
   }
 }
-

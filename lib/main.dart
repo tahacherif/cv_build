@@ -1,6 +1,5 @@
 import 'package:cv_build/formation.page.dart';
 import 'package:cv_build/langue.page.dart';
-import 'package:cv_build/projet.page.dart';
 import 'package:cv_build/skills.page.dart';
 import 'package:flutter/material.dart';
 import 'package:cv_build/cv.page.dart';
@@ -48,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         '/exp': (context) => ExpPage(),
         '/langue': (context) => LanguePage(),
         '/skills': (context) => SkillsPage(),
-        '/projet': (context) => ProjetPage(),
+
 
       },
       debugShowCheckedModeBanner: false,

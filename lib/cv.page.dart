@@ -2,17 +2,45 @@ import 'package:flutter/material.dart';
 import 'package:cv_build/data/user_data_source.dart'; // Import UserDataSource
 import 'package:cv_build/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'menu/drawer.widget.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 
-
-class CvPage extends StatelessWidget {
+class CvPage extends StatefulWidget {
   CvPage();
 
-  // Définition de la couleur "poudre de riz"
-  static const Color poudreDeRiz = Color(0xFFF5E6E6);
+  @override
+  _CvPageState createState() => _CvPageState();
+}
+
+class _CvPageState extends State<CvPage> {
+  late bool _isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    _getTheme();
+  }
+
+  Future<void> _getTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isLightMode = prefs.getBool("isLightMode");
+    if (isLightMode != null) {
+      setState(() {
+        _isLightMode = isLightMode;
+      });
+    } else {
+      setState(() {
+        _isLightMode = true; // Default to light mode
+      });
+    }
+  }
+
+  void _toggleTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLightMode = !_isLightMode;
+      prefs.setBool("isLightMode", _isLightMode);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,33 +49,34 @@ class CvPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-            child: CircularProgressIndicator(), // Afficher un indicateur de chargement pendant le chargement des données utilisateur
+            child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
           return Center(
-            child: Text('Error: ${snapshot.error}'), // Afficher un message d'erreur si le chargement des données échoue
+            child: Text('Error: ${snapshot.error}'),
           );
         } else {
           User user = snapshot.data!;
           return Scaffold(
-            drawer: MyDrawer(),
+            drawer: MyDrawer(user: user),
             appBar: AppBar(
               title: Text(
                 'Bienvenue dans mon CV',
-                style: TextStyle(fontSize: 18), // Définir une taille de police plus petite
+                style: TextStyle(fontSize: 21, color: _isLightMode ? Colors.black : Colors.white),
               ),
-              backgroundColor: Color(0xFFF5E6E6),
+              backgroundColor: _isLightMode ? Color(0xFFF5E6E6) : Colors.black, // Adjust background color based on theme
+              iconTheme: IconThemeData(color: _isLightMode ? Colors.black : Colors.white), // Change drawer icon color
               actions: [
                 IconButton(
-                  icon: Icon(Icons.language), // Utiliser l'icône de langue
+                  icon: Icon(Icons.language, color: _isLightMode ? Colors.black : Colors.white),
                   onPressed: () {
-                    // Ajoutez ici la logique pour changer la langue
+                    // Add language change logic here
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.nightlight_round), // Utiliser l'icône de mode nuit
+                  icon: Icon(_isLightMode ? Icons.light_mode : Icons.dark_mode, color: _isLightMode ? Colors.black : Colors.white),
                   onPressed: () {
-                    // Ajoutez ici la logique pour activer/désactiver le mode nuit
+                    _toggleTheme();
                   },
                 ),
               ],
@@ -60,191 +89,180 @@ class CvPage extends StatelessWidget {
                 children: [
                   // Partie gauche pour la photo et les contacts
                   Container(
-                    color: poudreDeRiz, // Utiliser la couleur "poudre de riz"
+                    color: _isLightMode ? Color(0xFFF5E6E6) : Colors.black, // Adjust background color based on theme
                     padding: EdgeInsets.all(0),
-                    width: 200, // Largeur fixée pour correspondre à la taille de la photo
+                    width: 200,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Photo de l'utilisateur sans bordure
                         Container(
-                          width: 200, // Largeur augmentée
-                          height: 300, // Hauteur augmentée
+                          width: 200,
+                          height: 300,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('images/' + user.image), // Chemin de votre image
+                              image: AssetImage('images/' + user.image),
                               fit: BoxFit.cover,
                             ),
                           ),
                         ),
-                        // Conteneur pour aligner le mot "Contact" à gauche
                         Padding(
-                          padding: const EdgeInsets.only(left: 16, top: 16), // Ajouter un padding horizontal à gauche
+                          padding: const EdgeInsets.only(left: 16, top: 16),
                           child: Text(
                             'Contact:',
-                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white), // Modifier la couleur du texte en blanc
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: _isLightMode ? Colors.black : Colors.white),
                           ),
                         ),
-                        SizedBox(height: 1), // Ajouter un espace entre "Contact" et les informations
-                        // Ligne pour l'email avec une icône
+                        SizedBox(height: 1),
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 3), // Ajouter un padding pour aligner avec le mot "Contact"
-                              child: Icon(Icons.email, color: Colors.black), // Changer la couleur de l'icône en noir
+                              padding: const EdgeInsets.only(left: 9),
+                              child: Icon(Icons.email, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${user.email}',
-                              style: TextStyle(fontSize: 13, color: Colors.black), // Modifier la couleur du texte en noir
+                              style: TextStyle(fontSize: 13, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                           ],
                         ),
-                        SizedBox(height: 1), // Ajouter un espace entre les lignes d'informations
-                        // Ligne pour le téléphone avec une icône
+                        SizedBox(height: 1),
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 3), // Ajouter un padding pour aligner avec le mot "Contact"
-                              child: Icon(Icons.phone, color: Colors.black), // Changer la couleur de l'icône en noir
+                              padding: const EdgeInsets.only(left: 9),
+                              child: Icon(Icons.phone, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${user.phone}',
-                              style: TextStyle(fontSize: 16, color: Colors.black), // Modifier la couleur du texte en noir
+                              style: TextStyle(fontSize: 16, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                           ],
                         ),
-                        SizedBox(height: 2), // Ajouter un espace entre les lignes d'informations
-                        // Ligne pour l'adresse avec une icône
+                        SizedBox(height: 2),
                         Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 3), // Ajouter un padding pour aligner avec le mot "Contact"
-                              child: Icon(Icons.location_on, color: Colors.black), // Changer la couleur de l'icône en noir
+                              padding: const EdgeInsets.only(left: 9),
+                              child: Icon(Icons.location_on, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${user.address}',
-                              style: TextStyle(fontSize: 16, color: Colors.black), // Modifier la couleur du texte en noir
+                              style: TextStyle(fontSize: 16, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                           ],
                         ),
-                        SizedBox(height: 16), // Ajouter un espace entre les informations de contact et les compétences
-                        // Texte pour les compétences
+                        SizedBox(height: 16),
                         Padding(
-                          padding: const EdgeInsets.only(left: 16), // Ajouter un padding pour aligner avec le mot "Contact"
+                          padding: const EdgeInsets.only(left: 16),
                           child: Text(
                             'Skills:',
-                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white), // Modifier la couleur du texte en blanc
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: _isLightMode ? Colors.black : Colors.white),
                           ),
                         ),
-                        // Ligne pour afficher les compétences
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Liste des compétences
                             ...user.skills.map((skill) => Padding(
-                              padding: const EdgeInsets.only(left: 16), // Ajouter un padding pour aligner avec le mot "Contact"
+                              padding: const EdgeInsets.only(left: 16),
                               child: Text(
                                 '- $skill',
-                                style: TextStyle(fontSize: 20, color: Colors.black), // Modifier la couleur du texte en noir
+                                style: TextStyle(fontSize: 20, color: _isLightMode ? Colors.black : Colors.white),
                               ),
                             )).toList(),
-                            SizedBox(height: 100), // Ajouter un espace entre les compétences et l'icône de langue
-
+                            SizedBox(height: 100),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(width: 16),
-                  // Partie droite pour les données
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 16),
-                        // Informations de contact
-                        Text(
-                          user.name,
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFFD7ACAC)),
-                        ),
-                        Text(
-                          '- ${user.summary}',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(height: 60),
-                        // Rangée pour les icônes
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            // Première icône Instagram
-                            GestureDetector(
-                              onTap: () {
-                                // Rediriger vers le lien Instagram
-                                // Mettez votre URL Instagram à la place de 'votre_url_instagram'
-                                launch('votre_url_instagram');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: ImageIcon(
-                                  AssetImage('images/insta.png'),
-                                  size: 40, // Taille plus petite de l'icône
-                                  color: Color(0xFF9D7C7C),
+                    child: Container(
+                      color: _isLightMode ? Colors.white : Colors.grey[800], // Adjust background color based on theme
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 9.0), // Adjust the left padding as needed
+                            child: Text(
+                              user.name,
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: _isLightMode ? Color(0xFFD7ACAC) : Colors.white),
+                            ),
+                          ),
+
+                          Padding(
+                            padding: const EdgeInsets.only(left: 9.0), // Adjust the left padding as needed
+                            child: Text(
+                              '- ${user.summary}',
+                              style: TextStyle(fontSize: 18, color: _isLightMode ? Colors.black : Colors.white),
+                            ),
+                          ),
+
+                          SizedBox(height: 60),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  launch('https://www.instagram.com/cherif.taha/');
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: ImageIcon(
+                                    AssetImage('images/insta.png'),
+                                    size: 50,
+                                    color: _isLightMode ? Color(0xFF9D7C7C) : Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-
-                            // Deuxième icône LinkedIn
-                            GestureDetector(
-                              onTap: () {
-                                // Rediriger vers le lien LinkedIn
-                                // Mettez votre URL LinkedIn à la place de 'votre_url_linkedin'
-                                launch('votre_url_linkedin');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: ImageIcon(
-                                  AssetImage('images/link.png'),
-                                  size: 40, // Taille plus petite de l'icône
-                                  color: Color(0xFF9D7C7C),
+                              SizedBox(width: 10), // Ajoutez un espacement horizontal de 10 pixels
+                              GestureDetector(
+                                onTap: () {
+                                  launch('https://www.linkedin.com/in/taha-cherif-130481207/');
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: ImageIcon(
+                                    AssetImage('images/link.png'),
+                                    size: 50,
+                                    color: _isLightMode ? Color(0xFF9D7C7C) : Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-
-                            // Troisième icône Facebook
-                            GestureDetector(
-                              onTap: () {
-                                // Rediriger vers le lien Facebook
-                                // Mettez votre URL Facebook à la place de 'votre_url_facebook'
-                                launch('votre_url_facebook');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: ImageIcon(
-                                  AssetImage('images/fb.png'),
-                                  size: 40, // Taille plus petite de l'icône
-                                  color: Color(0xFF9D7C7C),
+                              SizedBox(width: 10), // Ajoutez un espacement horizontal de 10 pixels
+                              GestureDetector(
+                                onTap: () {
+                                  launch('https://www.facebook.com/taha.cherif.52');
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: ImageIcon(
+                                    AssetImage('images/fb.png'),
+                                    size: 50,
+                                    color: _isLightMode ? Color(0xFF9D7C7C) : Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
 
-
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
+
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.remove("user");
-                Navigator.pop(context); // Fermer la page actuelle
-                Navigator.of(context).pushNamed('/home'); // Naviguer vers la page d'accueil
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed('/home');
               },
               child: Icon(Icons.arrow_back),
             ),
