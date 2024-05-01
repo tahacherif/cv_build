@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'LanguageProvider.dart';
+import 'main.dart';
 
 class LanguePage extends StatelessWidget {
   @override
@@ -8,14 +9,14 @@ class LanguePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Language",
+          isEnglishOn ? "langue" : "Language",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.grey[900],
+            color: isLightMode ? Colors.grey[900] : Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFFD7ACAC),
+        backgroundColor: isLightMode ? Color(0xFFD7ACAC) : Colors.black,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -31,6 +32,8 @@ class LanguePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: isLightMode ? Colors.white : Colors.black,
+
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -47,13 +50,13 @@ class LanguePage extends StatelessWidget {
               child: Icon(
                 Icons.home,
                 size: 30, // Taille du logo
-                color: Color(0xFFD7ACAC), // Couleur du logo
+                color: isLightMode ? Color(0xFFD7ACAC) : Colors.white, // Couleur du logo
               ),
             ),
-
           ],
         ),
       ),
+      backgroundColor: isLightMode ? Colors.white : Colors.black, // Set background color based on mode
     );
   }
 

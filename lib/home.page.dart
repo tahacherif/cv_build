@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.dart';
+
 class HomePage extends StatelessWidget {
   late SharedPreferences prefs;
 
@@ -8,17 +10,17 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Page d'Accueil",
+        title: Text(isEnglishOn ? "Page d'Accueil" : "Home page",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.grey[900],
+            color: isLightMode ? Colors.grey[900] : Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFFD7ACAC),
+        backgroundColor: isLightMode ?Color(0xFFD7ACAC)  : Colors.black,
       ),
       body: Container(
+        color: isLightMode ? Colors.white : Colors.grey[800],
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -37,7 +39,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       'Mohamed Taha Cherif',
                       style: TextStyle(
-                        color: Color(0xFFD7ACAC),
+                        color: isLightMode ? Color(0xFFD7ACAC) : Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -60,7 +62,7 @@ class HomePage extends StatelessWidget {
                     Text(
                       'Taieb Daoud',
                       style: TextStyle(
-                        color: Color(0xFFD7ACAC),
+                        color: isLightMode ? Color(0xFFD7ACAC) : Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
