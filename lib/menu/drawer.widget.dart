@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../config/global.params.dart';
+import 'package:cv_build/model/user.dart'; // Import the User model
+
 class MyDrawer extends StatelessWidget {
   late SharedPreferences prefs;
+  final User user; // Add user as a parameter to the constructor
+
+  MyDrawer({required this.user}); // Constructor to receive user object
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -15,10 +21,10 @@ class MyDrawer extends StatelessWidget {
             ),
             child: Center(
               child: CircleAvatar(
-                backgroundImage: AssetImage("images/taieb.jpg"),
+                // Use the user's image here
+                backgroundImage: AssetImage('images/' + user.image),
                 radius: 80,
               ),
-
             ),
           ),
           ...(GlobalParams.menus as List).map((item){
