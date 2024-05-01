@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import '../menu/drawer.widget.dart';
 import 'package:cv_build/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cv_build/data/user_data_source.dart'; // Import UserDataSource
+import 'package:cv_build/data/user_data_source.dart';
+
+import 'main.dart'; // Import UserDataSource
 
 
 class FormationPage extends StatefulWidget {
@@ -49,14 +51,14 @@ class _FormationPageState extends State<FormationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Academic Formation",
+          isEnglishOn ? "Formation Academique" : "Academic Formation",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.grey[900],
+            color: isLightMode ? Colors.grey[900] : Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFFD7ACAC),
+        backgroundColor: isLightMode ? Color(0xFFD7ACAC) : Colors.black,
       ),
       body: _isLoading
           ? Center(
@@ -77,11 +79,10 @@ class _FormationPageState extends State<FormationPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: isLightMode ? Colors.white : Colors.black,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-
-
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, '/home');
@@ -89,19 +90,22 @@ class _FormationPageState extends State<FormationPage> {
               child: Icon(
                 Icons.home,
                 size: 30, // Taille du logo
-                color: Color(0xFFD7ACAC), // Couleur du logo
+                color: isLightMode ? Color(0xFFD7ACAC) : Colors.white, // Couleur du logo
               ),
             ),
             IconButton(
-              icon: Icon(Icons.arrow_forward),
+              icon: Icon(
+                Icons.arrow_forward,
+                color: isLightMode ? Colors.black : Colors.white,
+              ),
               onPressed: () {
                 Navigator.pushNamed(context, '/exp');
-
               },
             ),
           ],
         ),
       ),
+      backgroundColor: isLightMode ? Colors.white : Colors.black, // Set background color based on mode
     );
   }
 

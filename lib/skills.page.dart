@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import '../menu/drawer.widget.dart';
 import 'package:cv_build/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cv_build/data/user_data_source.dart'; // Import UserDataSource
+import 'package:cv_build/data/user_data_source.dart';
+
+import 'main.dart'; // Import UserDataSource
 
 class SkillsPage extends StatefulWidget {
   @override
@@ -46,14 +48,14 @@ class _SkillsPageState extends State<SkillsPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Technical Skills",
+          isEnglishOn ? "Competances Technique" : "Technical Skills",
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.grey[900],
+            color: isLightMode ? Colors.grey[900] : Colors.white,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Color(0xFFD7ACAC),
+        backgroundColor: isLightMode ? Color(0xFFD7ACAC) : Colors.black,
       ),
       body: _isLoading
           ? Center(
@@ -74,10 +76,11 @@ class _SkillsPageState extends State<SkillsPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: isLightMode ? Colors.white : Colors.black,
+
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-
             IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -91,7 +94,7 @@ class _SkillsPageState extends State<SkillsPage> {
               child: Icon(
                 Icons.home,
                 size: 30, // Taille du logo
-                color: Color(0xFFD7ACAC), // Couleur du logo
+                color: isLightMode ? Color(0xFFD7ACAC) : Colors.white, // Couleur du logo
               ),
             ),
             IconButton(
@@ -103,6 +106,7 @@ class _SkillsPageState extends State<SkillsPage> {
           ],
         ),
       ),
+      backgroundColor: isLightMode ? Colors.white : Colors.black, // Set background color based on mode
     );
   }
 

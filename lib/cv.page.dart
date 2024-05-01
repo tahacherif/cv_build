@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cv_build/data/user_data_source.dart'; // Import UserDataSource
 import 'package:cv_build/model/user.dart';
+import 'main.dart';
 import 'menu/drawer.widget.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'main.dart';
-import '../config/global.params.dart';
 
 class CvPage extends StatefulWidget {
   CvPage();
@@ -15,8 +14,6 @@ class CvPage extends StatefulWidget {
 }
 
 class _CvPageState extends State<CvPage> {
-  late bool _isLightMode;
-
   @override
   void initState() {
     super.initState();
@@ -28,19 +25,19 @@ class _CvPageState extends State<CvPage> {
     bool? isLightMode = prefs.getBool("isLightMode");
     if (isLightMode != null) {
       setState(() {
-        _isLightMode = isLightMode;
+        isLightMode = isLightMode;
       });
     } else {
       setState(() {
-        _isLightMode = true; // Default to light mode
+        isLightMode = true; // Default to light mode
       });
     }
   }
   void _toggleTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _isLightMode = !_isLightMode;
-      prefs.setBool("isLightMode", _isLightMode);
+      isLightMode = !isLightMode;
+      prefs.setBool("isLightMode", isLightMode);
     });
   }
 
@@ -70,19 +67,19 @@ class _CvPageState extends State<CvPage> {
             appBar: AppBar(
               title: Text(
                 isEnglishOn ? 'Bienvenue dans mon CV' : 'Welcome to my CV',
-                style: TextStyle(fontSize: 21, color: _isLightMode ? Colors.black : Colors.white),
+                style: TextStyle(fontSize: 21, color: isLightMode ? Colors.black : Colors.white),
               ),
-              backgroundColor: _isLightMode ? Color(0xFFF5E6E6) : Colors.black,
-              iconTheme: IconThemeData(color: _isLightMode ? Colors.black : Colors.white),
+              backgroundColor: isLightMode ? Color(0xFFF5E6E6) : Colors.black,
+              iconTheme: IconThemeData(color: isLightMode ? Colors.black : Colors.white),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.language, color: _isLightMode ? Colors.black : Colors.white),
+                  icon: Icon(Icons.language, color: isLightMode ? Colors.black : Colors.white),
                   onPressed: () {
                     _toggleLanguage();
                   },
                 ),
                 IconButton(
-                  icon: Icon(_isLightMode ? Icons.light_mode : Icons.dark_mode, color: _isLightMode ? Colors.black : Colors.white),
+                  icon: Icon(isLightMode ? Icons.light_mode : Icons.dark_mode, color: isLightMode ? Colors.black : Colors.white),
                   onPressed: () {
                     _toggleTheme();
                   },
@@ -96,7 +93,7 @@ class _CvPageState extends State<CvPage> {
                 children: [
                   // Left side for photo and contacts
                   Container(
-                    color: _isLightMode ? Color(0xFFF5E6E6) : Colors.black,
+                    color: isLightMode ? Color(0xFFF5E6E6) : Colors.black,
                     padding: EdgeInsets.all(0),
                     width: 200,
                     child: Column(
@@ -116,7 +113,7 @@ class _CvPageState extends State<CvPage> {
                           padding: const EdgeInsets.only(left: 16, top: 16),
                           child: Text(
                             'Contact:',
-                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: _isLightMode ? Colors.black : Colors.white),
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: isLightMode ? Colors.black : Colors.white),
                           ),
                         ),
                         SizedBox(height: 1),
@@ -124,12 +121,12 @@ class _CvPageState extends State<CvPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 9),
-                              child: Icon(Icons.email, color: _isLightMode ? Colors.black : Colors.white),
+                              child: Icon(Icons.email, color: isLightMode ? Colors.black : Colors.white),
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${user.email}',
-                              style: TextStyle(fontSize: 13, color: _isLightMode ? Colors.black : Colors.white),
+                              style: TextStyle(fontSize: 13, color: isLightMode ? Colors.black : Colors.white),
                             ),
                           ],
                         ),
@@ -138,12 +135,12 @@ class _CvPageState extends State<CvPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 9),
-                              child: Icon(Icons.phone, color: _isLightMode ? Colors.black : Colors.white),
+                              child: Icon(Icons.phone, color: isLightMode ? Colors.black : Colors.white),
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${user.phone}',
-                              style: TextStyle(fontSize: 16, color: _isLightMode ? Colors.black : Colors.white),
+                              style: TextStyle(fontSize: 16, color: isLightMode ? Colors.black : Colors.white),
                             ),
                           ],
                         ),
@@ -152,12 +149,12 @@ class _CvPageState extends State<CvPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 9),
-                              child: Icon(Icons.location_on, color: _isLightMode ? Colors.black : Colors.white),
+                              child: Icon(Icons.location_on, color: isLightMode ? Colors.black : Colors.white),
                             ),
                             SizedBox(width: 2),
                             Text(
                               '${user.address}',
-                              style: TextStyle(fontSize: 16, color: _isLightMode ? Colors.black : Colors.white),
+                              style: TextStyle(fontSize: 16, color: isLightMode ? Colors.black : Colors.white),
                             ),
                           ],
                         ),
@@ -166,7 +163,7 @@ class _CvPageState extends State<CvPage> {
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
                             isEnglishOn ? 'Comptetances' : 'Skills:',
-                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: _isLightMode ? Colors.black : Colors.white),
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: isLightMode ? Colors.black : Colors.white),
                           ),
                         ),
                         Column(
@@ -176,7 +173,7 @@ class _CvPageState extends State<CvPage> {
                               padding: const EdgeInsets.only(left: 16),
                               child: Text(
                                 '- $skill',
-                                style: TextStyle(fontSize: 20, color: _isLightMode ? Colors.black : Colors.white),
+                                style: TextStyle(fontSize: 20, color: isLightMode ? Colors.black : Colors.white),
                               ),
                             ))
                           ],
@@ -186,7 +183,7 @@ class _CvPageState extends State<CvPage> {
                   ),
                   Expanded(
                     child: Container(
-                      color: _isLightMode ? Colors.white : Colors.grey[800],
+                      color: isLightMode ? Colors.white : Colors.grey[800],
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -195,7 +192,7 @@ class _CvPageState extends State<CvPage> {
                             padding: const EdgeInsets.only(left: 9.0),
                             child: Text(
                               user.name,
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: _isLightMode ? Color(0xFFD7ACAC) : Colors.white),
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: isLightMode ? Color(0xFFD7ACAC) : Colors.white),
                             ),
                           ),
                           Padding(
@@ -204,7 +201,7 @@ class _CvPageState extends State<CvPage> {
                               isEnglishOn
                                   ? '- ${user.summary}'
                                   : "-As a second-year student in the field of computer engineering, I am passionate about web and mobile development. My versatility in these areas allows me to tackle various tasks with ease. Endowed with great adaptability and a proven ability to work in a team.",
-                              style: TextStyle(fontSize: 18, color: _isLightMode ? Colors.black : Colors.white),
+                              style: TextStyle(fontSize: 18, color: isLightMode ? Colors.black : Colors.white),
                             ),
                           ),
                           SizedBox(height: 60),
@@ -220,7 +217,7 @@ class _CvPageState extends State<CvPage> {
                                   child: ImageIcon(
                                     AssetImage('images/insta.png'),
                                     size: 50,
-                                    color: _isLightMode ? Color(0xFF9D7C7C) : Colors.white,
+                                    color: isLightMode ? Color(0xFF9D7C7C) : Colors.white,
                                   ),
                                 ),
                               ),
@@ -234,7 +231,7 @@ class _CvPageState extends State<CvPage> {
                                   child: ImageIcon(
                                     AssetImage('images/link.png'),
                                     size: 50,
-                                    color: _isLightMode ? Color(0xFF9D7C7C) : Colors.white,
+                                    color: isLightMode ? Color(0xFF9D7C7C) : Colors.white,
                                   ),
                                 ),
                               ),
@@ -248,7 +245,7 @@ class _CvPageState extends State<CvPage> {
                                   child: ImageIcon(
                                     AssetImage('images/fb.png'),
                                     size: 50,
-                                    color: _isLightMode ? Color(0xFF9D7C7C) : Colors.white,
+                                    color: isLightMode ? Color(0xFF9D7C7C) : Colors.white,
                                   ),
                                 ),
                               ),

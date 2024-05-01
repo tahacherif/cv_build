@@ -9,6 +9,7 @@ import 'home.page.dart';
 import 'langue.page.dart';
 import 'map.page.dart';
 bool isEnglishOn = true;
+bool isLightMode = true;
 void main() {
   runApp(MyApp());
 }
