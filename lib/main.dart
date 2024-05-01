@@ -1,57 +1,47 @@
-import 'package:cv_build/formation.page.dart';
-import 'package:cv_build/langue.page.dart';
 import 'package:cv_build/skills.page.dart';
 import 'package:flutter/material.dart';
-import 'package:cv_build/cv.page.dart';
-import 'package:cv_build/home.page.dart';
-import 'package:cv_build/data/user_data_source.dart';
-import 'package:cv_build/model/user.dart';
-
+import 'package:provider/provider.dart';
+import 'LanguageProvider.dart';
+import 'cv.page.dart';
 import 'exp.page.dart';
-
-
+import 'formation.page.dart';
+import 'home.page.dart';
+import 'langue.page.dart';
+import 'map.page.dart';
+bool isEnglishOn = true;
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late User user;
-
-  @override
-  void initState() {
-    super.initState();
-    _getUserData();
-  }
-
-  Future<void> _getUserData() async {
-    // For demonstration purposes, let's assume we want the first user in the list by default
-    user = UserDataSource.users.isNotEmpty ? UserDataSource.users[0] : User.empty();
-    setState(() {}); // Update the state to rebuild the UI with fetched data
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.light(), // Default light mode theme
-      darkTheme: ThemeData.dark(), // Dark mode theme
-      themeMode: ThemeMode.system, // Set to system to follow system settings, you can change it to ThemeMode.light or ThemeMode.dark
-      routes: {
-        '/cvPage': (context) => CvPage(), // Pass the user to CvPage
-        '/home': (context) => HomePage(),
-        '/formation': (context) => FormationPage(),
-        '/exp': (context) => ExpPage(),
-        '/langue': (context) => LanguePage(),
-        '/skills': (context) => SkillsPage(),
+    return ChangeNotifierProvider<LanguageProvider>(
+      create: (_) => LanguageProvider(), // Create an instance of LanguageProvider
+      child: Consumer<LanguageProvider>(
+        builder: (context, languageProvider, _) {
+          return MaterialApp(
+            // MaterialApp with language switching support
+            theme: ThemeData.light(), // Default light mode theme
+            darkTheme: ThemeData.dark(), // Dark mode theme
+            themeMode: ThemeMode.system, // Set to system to follow system settings
+            debugShowCheckedModeBanner: false,
+            home: HomePage(),
+            routes: {
+              '/cvPage': (context) => CvPage(),
+              '/home': (context) => HomePage(),
+              '/formation': (context) => FormationPage(),
+              '/exp': (context) => ExpPage(),
+              '/langue': (context) => LanguePage(),
+              '/skills': (context) => SkillsPage(),
+              '/maps': (context) => MapPage(),
 
 
-      },
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+
+            },
+          );
+        },
+      ),
     );
   }
 }

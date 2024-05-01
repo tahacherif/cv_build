@@ -61,7 +61,10 @@ class LanguePage extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: () {
         Provider.of<LanguageProvider>(context, listen: false).changeLanguage(locale);
+        print(locale);
+        Navigator.pop(context); // Navigate back after changing the language
       },
+
       icon: Icon(icon),
       label: Text(language),
       style: ElevatedButton.styleFrom(

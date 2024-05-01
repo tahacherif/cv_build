@@ -3,12 +3,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../config/global.params.dart';
 import 'package:cv_build/model/user.dart'; // Import the User model
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
+  final User user;
+  final bool isEnglishOn;
+
+  MyDrawer({required this.user, required this.isEnglishOn}); // Update the constructor
+
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
   late SharedPreferences prefs;
-  final User user; // Add user as a parameter to the constructor
-
-  MyDrawer({required this.user}); // Constructor to receive user object
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -22,7 +28,7 @@ class MyDrawer extends StatelessWidget {
             child: Center(
               child: CircleAvatar(
                 // Use the user's image here
-                backgroundImage: AssetImage('images/' + user.image),
+                backgroundImage: AssetImage('images/' + widget.user.image),
                 radius: 80,
               ),
             ),
@@ -53,5 +59,11 @@ class MyDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+  void didUpdateWidget(MyDrawer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isEnglishOn != oldWidget.isEnglishOn) {
+      setState(() {});
+    }
   }
 }

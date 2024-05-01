@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cv_build/data/user_data_source.dart'; // Import UserDataSource
 import 'package:cv_build/model/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'menu/drawer.widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'main.dart';
+import '../config/global.params.dart';
 
 class CvPage extends StatefulWidget {
   CvPage();
@@ -14,6 +16,7 @@ class CvPage extends StatefulWidget {
 
 class _CvPageState extends State<CvPage> {
   late bool _isLightMode;
+
   @override
   void initState() {
     super.initState();
@@ -33,12 +36,17 @@ class _CvPageState extends State<CvPage> {
       });
     }
   }
-
   void _toggleTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _isLightMode = !_isLightMode;
       prefs.setBool("isLightMode", _isLightMode);
+    });
+  }
+
+  void _toggleLanguage() {
+    setState(() {
+      isEnglishOn = !isEnglishOn;
     });
   }
 
@@ -58,19 +66,19 @@ class _CvPageState extends State<CvPage> {
         } else {
           User user = snapshot.data!;
           return Scaffold(
-            drawer: MyDrawer(user: user),
+            drawer: MyDrawer(user: user, isEnglishOn: isEnglishOn),
             appBar: AppBar(
               title: Text(
-                'Bienvenue dans mon CV',
+                isEnglishOn ? 'Bienvenue dans mon CV' : 'Welcome to my CV',
                 style: TextStyle(fontSize: 21, color: _isLightMode ? Colors.black : Colors.white),
               ),
-              backgroundColor: _isLightMode ? Color(0xFFF5E6E6) : Colors.black, // Adjust background color based on theme
-              iconTheme: IconThemeData(color: _isLightMode ? Colors.black : Colors.white), // Change drawer icon color
+              backgroundColor: _isLightMode ? Color(0xFFF5E6E6) : Colors.black,
+              iconTheme: IconThemeData(color: _isLightMode ? Colors.black : Colors.white),
               actions: [
                 IconButton(
                   icon: Icon(Icons.language, color: _isLightMode ? Colors.black : Colors.white),
                   onPressed: () {
-                    // Add language change logic here
+                    _toggleLanguage();
                   },
                 ),
                 IconButton(
@@ -81,15 +89,14 @@ class _CvPageState extends State<CvPage> {
                 ),
               ],
             ),
-
             body: Padding(
               padding: EdgeInsets.all(0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Partie gauche pour la photo et les contacts
+                  // Left side for photo and contacts
                   Container(
-                    color: _isLightMode ? Color(0xFFF5E6E6) : Colors.black, // Adjust background color based on theme
+                    color: _isLightMode ? Color(0xFFF5E6E6) : Colors.black,
                     padding: EdgeInsets.all(0),
                     width: 200,
                     child: Column(
@@ -158,7 +165,7 @@ class _CvPageState extends State<CvPage> {
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Text(
-                            'Skills:',
+                            isEnglishOn ? 'Comptetances' : 'Skills:',
                             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: _isLightMode ? Colors.black : Colors.white),
                           ),
                         ),
@@ -171,8 +178,7 @@ class _CvPageState extends State<CvPage> {
                                 '- $skill',
                                 style: TextStyle(fontSize: 20, color: _isLightMode ? Colors.black : Colors.white),
                               ),
-                            )).toList(),
-                            SizedBox(height: 100),
+                            ))
                           ],
                         ),
                       ],
@@ -180,27 +186,27 @@ class _CvPageState extends State<CvPage> {
                   ),
                   Expanded(
                     child: Container(
-                      color: _isLightMode ? Colors.white : Colors.grey[800], // Adjust background color based on theme
+                      color: _isLightMode ? Colors.white : Colors.grey[800],
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 16),
                           Padding(
-                            padding: const EdgeInsets.only(left: 9.0), // Adjust the left padding as needed
+                            padding: const EdgeInsets.only(left: 9.0),
                             child: Text(
                               user.name,
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: _isLightMode ? Color(0xFFD7ACAC) : Colors.white),
                             ),
                           ),
-
                           Padding(
-                            padding: const EdgeInsets.only(left: 9.0), // Adjust the left padding as needed
+                            padding: const EdgeInsets.only(left: 9.0),
                             child: Text(
-                              '- ${user.summary}',
+                              isEnglishOn
+                                  ? '- ${user.summary}'
+                                  : "-As a second-year student in the field of computer engineering, I am passionate about web and mobile development. My versatility in these areas allows me to tackle various tasks with ease. Endowed with great adaptability and a proven ability to work in a team.",
                               style: TextStyle(fontSize: 18, color: _isLightMode ? Colors.black : Colors.white),
                             ),
                           ),
-
                           SizedBox(height: 60),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -218,7 +224,7 @@ class _CvPageState extends State<CvPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10), // Ajoutez un espacement horizontal de 10 pixels
+                              SizedBox(width: 10),
                               GestureDetector(
                                 onTap: () {
                                   launch('https://www.linkedin.com/in/taha-cherif-130481207/');
@@ -232,7 +238,7 @@ class _CvPageState extends State<CvPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10), // Ajoutez un espacement horizontal de 10 pixels
+                              SizedBox(width: 10),
                               GestureDetector(
                                 onTap: () {
                                   launch('https://www.facebook.com/taha.cherif.52');
@@ -248,7 +254,6 @@ class _CvPageState extends State<CvPage> {
                               ),
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -256,7 +261,6 @@ class _CvPageState extends State<CvPage> {
                 ],
               ),
             ),
-
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();

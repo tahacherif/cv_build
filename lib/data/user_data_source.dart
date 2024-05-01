@@ -10,7 +10,7 @@ class UserDataSource {
       "+216 44134396",
       "123 Main St, City",
       "taha.jpg",
-      "En tant qu'étudiant en deuxième année dans le domaine du génie informatique, je suis passionné par le développement web et mobile. Ma polyvalence dans ces domaines me permet d'aborder diverses tâches avec aisance. Doté d'une grande capacité d'adaptation et d'une aptitude avérée au travail en équipe,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzaaaaaaaaaaaaaaaaa .",
+      "En tant qu'étudiant en deuxième année dans le domaine du génie informatique, je suis passionné par le développement web et mobile. Ma polyvalence dans ces domaines me permet d'aborder diverses tâches avec aisance. Doté d'une grande capacité d'adaptation et d'une aptitude avérée au travail en équipe,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaazzzzzzzzzzzzzzz .",
       ["Flutter", "Java", "Python" ,"Anuglar" ],
       [
         Experience("Senior Developer", "ABC Inc.", "2018", "Present", "Developed new features for XYZ app."),
